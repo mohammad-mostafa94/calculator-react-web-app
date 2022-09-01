@@ -1,6 +1,6 @@
 import './App.css';
 import { useState, useEffect } from 'react';
-
+import NumberFormat from 'react-number-format';
 
 
 function App() {
@@ -44,41 +44,46 @@ function App() {
   const equals = (e) => {
     if (e?.target.innerText === "=") {
       setTotal(true);
+    };
+
+    let cal;
+    switch (operator) {
+      case "/":
+        cal = String(parseFloat(preState) / parseFloat(curState))
+        break;
+
+      case "+":
+        cal = String(parseFloat(preState) + parseFloat(curState));
+        break;
+
+      case "X":
+        cal = String(parseFloat(preState) * parseFloat(curState));
+        break;
+
+      case "-":
+        cal = String(parseFloat(preState) - parseFloat(curState));
+        break;
+
+      default:
+        return
     }
-  };
 
-  // let cal;
-  // switch (operator) {
-
-  //   case "/":
-  //     cal = String(parseFloat(preState) / parseFloat(curState));
-  //     break;
-
-  //   case "+":
-  //     cal = String(parseFloat(preState) + parseFloat(curState));
-  //     break;
-
-  //   case "X":
-  //     cal = String(parseFloat(preState) * parseFloat(curState));
-  //     break;
-
-  //   case "-":
-  //     cal = String(parseFloat(preState) - parseFloat(curState));
-  //     break;
-
-  //   default:
-  //     return;
-  // };
-  // setInput("");
-  // setPreState(cal);
-  // setCurState("");
-
+    setInput("");
+    setPreState(cal);
+    setCurState("");
+  }
 
   const minusPlus = () => {
-
+    if(curState.charAt(0) === "-"){
+      setCurState(curState.substring(1));
+    }else{
+      setCurState("-" + curState);
+    }
   };
   const percent = () => {
-
+    preState 
+    ? setCurState(String((parseFloat(curState) / 100) * preState)) 
+    : setCurState(String(parseFloat(curState) / 100));
   };
   const reset = () => {
     setPreState("");
@@ -89,7 +94,23 @@ function App() {
   return (
     <div className="container">
       <div className="wrapper">
-        <div className="screen">{input}</div>
+        <div className="screen">
+          {input !== "" || input === "0" ? (
+            <NumberFormat
+              value={input}
+              displayType={"text"}
+              thousandSeparator={true}
+            />
+          ) : (
+            <NumberFormat
+              value={preState}
+              displayType={"text"}
+              thousandSeparator={true}
+            />
+          )
+
+          }
+        </div>
         <div className="btn light-gray" onClick={reset}>AC</div>
         <div className="btn light-gray" onClick={percent}>%</div>
         <div className="btn light-gray" onClick={minusPlus}>+/-</div>
