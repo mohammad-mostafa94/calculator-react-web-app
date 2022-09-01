@@ -10,16 +10,70 @@ function App() {
   const [operator, setOperator] = useState(null);
   const [total, setTotal] = useState(false);
 
-  const inputNumber = e => {
+  const inputNum = e => {
+    if (curState.includes(".") && e.target.innerText === ".") return;
 
+    if (total) {
+      setPreState("");
+    }
+
+    curState ? setCurState((pre) => pre + e.target.innerText) : setCurState(e.target.innerText);
+    setTotal(false);
   };
+
+  useEffect(() => {
+    setInput(curState);
+  }, [curState]);
+
+  useEffect(() => {
+    setInput("0")
+  }, []);
 
   const operatorType = e => {
-
+    setTotal(false)
+    setOperator(e.target.innerText)
+    if (curState === "") return;
+    if (preState !== "") {
+      equals()
+    }
+    else {
+      setPreState(curState)
+      setCurState("")
+    }
   };
-  const equals = e => {
-
+  const equals = (e) => {
+    if (e?.target.innerText === "=") {
+      setTotal(true);
+    }
   };
+
+  // let cal;
+  // switch (operator) {
+
+  //   case "/":
+  //     cal = String(parseFloat(preState) / parseFloat(curState));
+  //     break;
+
+  //   case "+":
+  //     cal = String(parseFloat(preState) + parseFloat(curState));
+  //     break;
+
+  //   case "X":
+  //     cal = String(parseFloat(preState) * parseFloat(curState));
+  //     break;
+
+  //   case "-":
+  //     cal = String(parseFloat(preState) - parseFloat(curState));
+  //     break;
+
+  //   default:
+  //     return;
+  // };
+  // setInput("");
+  // setPreState(cal);
+  // setCurState("");
+
+
   const minusPlus = () => {
 
   };
@@ -27,32 +81,34 @@ function App() {
 
   };
   const reset = () => {
-
+    setPreState("");
+    setCurState("");
+    setInput("0");
   };
 
   return (
     <div className="container">
       <div className="wrapper">
-        <div className="screen"></div>
-        <div className="btn light-gray" onclick={reset}>AC</div>
-        <div className="btn light-gray" onclick={percent}>%</div>
-        <div className="btn light-gray" onclick={minusPlus}>+/-</div>
-        <div className="btn orange" onclick={operatorType}>/</div>
-        <div className="btn " onclick={inputNumber}>7</div>
-        <div className="btn " onclick={inputNumber}>8</div>
-        <div className="btn " onclick={inputNumber}>9</div>
-        <div className="btn orange" onclick={operatorType}>X</div>
-        <div className="btn " onclick={inputNumber}>4</div>
-        <div className="btn " onclick={inputNumber}>5</div>
-        <div className="btn " onclick={inputNumber}>6</div>
-        <div className="btn orange" onclick={operatorType}>+</div>
-        <div className="btn " onclick={inputNumber}>1</div>
-        <div className="btn " onclick={inputNumber}>2</div>
-        <div className="btn " onclick={inputNumber}>3</div>
-        <div className="btn orange" onclick={operatorType}>-</div>
-        <div className="btn " onclick={inputNumber}>0</div>
-        <div className="btn " onclick={inputNumber}>.</div>
-        <div className="btn " onclick={equals}>=</div>
+        <div className="screen">{input}</div>
+        <div className="btn light-gray" onClick={reset}>AC</div>
+        <div className="btn light-gray" onClick={percent}>%</div>
+        <div className="btn light-gray" onClick={minusPlus}>+/-</div>
+        <div className="btn orange" onClick={operatorType}>/</div>
+        <div className="btn " onClick={inputNum}>7</div>
+        <div className="btn " onClick={inputNum}>8</div>
+        <div className="btn " onClick={inputNum}>9</div>
+        <div className="btn orange" onClick={operatorType}>X</div>
+        <div className="btn " onClick={inputNum}>4</div>
+        <div className="btn " onClick={inputNum}>5</div>
+        <div className="btn " onClick={inputNum}>6</div>
+        <div className="btn orange" onClick={operatorType}>+</div>
+        <div className="btn " onClick={inputNum}>1</div>
+        <div className="btn " onClick={inputNum}>2</div>
+        <div className="btn " onClick={inputNum}>3</div>
+        <div className="btn orange" onClick={operatorType}>-</div>
+        <div className="btn zero" onClick={inputNum}>0</div>
+        <div className="btn " onClick={inputNum}>.</div>
+        <div className="btn " onClick={equals}>=</div>
 
       </div>
     </div>
